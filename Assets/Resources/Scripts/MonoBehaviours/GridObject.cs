@@ -7,7 +7,16 @@ public abstract class GridObject : MonoBehaviour {
     public void setNeighbourReferences(List<GridObject> neighbours) {
         this.neighbours = neighbours;
     }
-    public bool inNeighbours(GridObject gridObject) {
+    public bool isNeighbour(GridObject gridObject) {
         return neighbours.Contains(gridObject);
+    }
+    public int getNeighbourCount() {
+        return neighbours.Count;
+    }
+
+
+
+    protected internal void changeHighlightSetting(bool b) {
+        transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = b;
     }
 }

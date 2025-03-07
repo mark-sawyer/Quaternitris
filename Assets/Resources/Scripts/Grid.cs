@@ -52,7 +52,7 @@ public class Grid {
         if (r > 0) neighbours.Add(gridObjects[r - 1, c]);
         if (r < rows - 1) neighbours.Add(gridObjects[r + 1, c]);
         if (c > 0) neighbours.Add(gridObjects[r, c - 1]);
-        if (c > cols - 1) neighbours.Add(gridObjects[r, c + 1]);
+        if (c < cols - 1) neighbours.Add(gridObjects[r, c + 1]);
         return neighbours;
     }
 }
