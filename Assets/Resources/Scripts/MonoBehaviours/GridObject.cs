@@ -13,6 +13,7 @@ public abstract class GridObject : MonoBehaviour {
     public int getNeighbourCount() {
         return neighbours.Count;
     }
+    public abstract void gridObjectDelivered(GridObject gridObjectDraggedOn);
 
 
 

@@ -62,11 +62,17 @@ public class GameplayMouseInput {
         if (heldGridHoldable == null) return;
 
         // There's a heldGridHoldable.
-        if (raycast.collider == null) return;
+        if (raycast.collider == null) {
+            heldGridHoldable.heldHover();
+            return;
+        }
 
         // The mouse was over something with a collider.
         GridObject gridObjectOver = raycast.collider.GetComponent<GridObject>();
-        if (gridObjectOver == null) return;
+        if (gridObjectOver == null) {
+            heldGridHoldable.heldHover();
+            return;
+        }
 
         // The mouse was over a GridObject.
         heldGridHoldable.heldHover(gridObjectOver);

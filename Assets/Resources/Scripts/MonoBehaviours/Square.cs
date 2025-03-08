@@ -14,27 +14,43 @@ public class Square : GridObject, GridHoldable {
 
 
 
+    public override void gridObjectDelivered(GridObject gridObjectDraggedOn) {
+        if (gridObjectDraggedOn is Square) {
+            Square squareDraggedOn = (Square)gridObjectDraggedOn;
+            quaternion = squareDraggedOn.quaternion.transform(quaternion);
+            spriteRenderer.color = QuaternionColours.quaternionToColour(quaternion);
+        }
+    }
+
+
+
     public void beginBeingHeld() {
         changeHighlightSetting(true);
     }
-    public void heldHover(GridObject hoveredOver) {
-        void noCurrentNeighbourBeingHovered() {
-            if (!isNeighbour(hoveredOver)) return;
+    public void heldHover() {
+        if (hoveredNeighbourWhileThisHeld == null) return;
 
-            hoveredNeighbourWhileThisHeld = hoveredOver;
+        hoveredNeighbourWhileThisHeld.changeHighlightSetting(false);
+        hoveredNeighbourWhileThisHeld = null;
+    }
+    public void heldHover(GridObject gridObjectOver) {
+        void noCurrentNeighbourBeingHovered() {
+            if (!isNeighbour(gridObjectOver)) return;
+
+            hoveredNeighbourWhileThisHeld = gridObjectOver;
             hoveredNeighbourWhileThisHeld.changeHighlightSetting(true);
         }
         void currentNeighbourIsBeingHovered() {
-            if (!isNeighbour(hoveredOver)) {
+            if (!isNeighbour(gridObjectOver)) {
                 hoveredNeighbourWhileThisHeld.changeHighlightSetting(false);
                 hoveredNeighbourWhileThisHeld = null;
                 return;
             }
 
-            if (hoveredOver == hoveredNeighbourWhileThisHeld) return;
+            if (gridObjectOver == hoveredNeighbourWhileThisHeld) return;
 
             hoveredNeighbourWhileThisHeld.changeHighlightSetting(false);
-            hoveredNeighbourWhileThisHeld = hoveredOver;
+            hoveredNeighbourWhileThisHeld = gridObjectOver;
             hoveredNeighbourWhileThisHeld.changeHighlightSetting(true);
         }
 
@@ -50,10 +66,12 @@ public class Square : GridObject, GridHoldable {
         changeHighlightSetting(false);
     }
     public void holdReleased(GridObject gridObjectOver) {
-        if (hoveredNeighbourWhileThisHeld != null) {
-            hoveredNeighbourWhileThisHeld.changeHighlightSetting(false);
-            hoveredNeighbourWhileThisHeld = null;
-        }
         changeHighlightSetting(false);
+
+        if (hoveredNeighbourWhileThisHeld == null) return;
+
+        hoveredNeighbourWhileThisHeld.changeHighlightSetting(false);
+        hoveredNeighbourWhileThisHeld.gridObjectDelivered(this);
+        Destroy(gameObject);
     }
 }
