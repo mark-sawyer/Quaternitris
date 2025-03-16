@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public class GameplayMouseInput {
+    /*
     private bool isHeld;
-    private GridHoldable heldGridHoldable;
+    private Square heldSquare;
 
 
 
@@ -22,9 +23,9 @@ public class GameplayMouseInput {
             handleRelease(raycast);
         }
         else if (Input.GetMouseButtonDown(0)) {
-            if (heldGridHoldable != null) {
-                heldGridHoldable.holdReleased();
-                heldGridHoldable = null;
+            if (heldSquare != null) {
+                heldSquare.holdReleased();
+                heldSquare = null;
             }
         }  // Mouse pressed again while held (shouldn't happen)
         else if (Input.GetMouseButton(0)) {
@@ -32,9 +33,9 @@ public class GameplayMouseInput {
         }
         else {
             isHeld = false;
-            if (heldGridHoldable != null) {
-                heldGridHoldable.holdReleased();
-                heldGridHoldable = null;
+            if (heldSquare != null) {
+                heldSquare.holdReleased();
+                heldSquare = null;
             }
         }  // Mouse not held when held (shouldn't happen)
     }
@@ -51,52 +52,53 @@ public class GameplayMouseInput {
         if (raycast.collider == null) return;
 
         // The mouse was over something with a collider.
-        GridHoldable holdable = raycast.collider.GetComponent<GridHoldable>();
+        Square holdable = raycast.collider.GetComponent<Square>();
         if (holdable == null) return;
 
         // The mouse was over a GridHoldable.
         holdable.beginBeingHeld();
-        heldGridHoldable = holdable;
+        heldSquare = holdable;
     }
     private void handleHeldHover(RaycastHit2D raycast) {
-        if (heldGridHoldable == null) return;
+        if (heldSquare == null) return;
 
         // There's a heldGridHoldable.
         if (raycast.collider == null) {
-            heldGridHoldable.heldHover();
+            heldSquare.heldHover();
             return;
         }
 
         // The mouse was over something with a collider.
-        GridObject gridObjectOver = raycast.collider.GetComponent<GridObject>();
-        if (gridObjectOver == null) {
-            heldGridHoldable.heldHover();
+        Square squareOver = raycast.collider.GetComponent<Square>();
+        if (squareOver == null) {
+            heldSquare.heldHover();
             return;
         }
 
         // The mouse was over a GridObject.
-        heldGridHoldable.heldHover(gridObjectOver);
+        heldSquare.heldHover(squareOver);
     }
     private void handleRelease(RaycastHit2D raycast) {
-        if (heldGridHoldable == null) return;
+        if (heldSquare == null) return;
 
         // There's a heldGridHoldable.
         if (raycast.collider == null) {
-            heldGridHoldable.holdReleased();
-            heldGridHoldable = null;
+            heldSquare.holdReleased();
+            heldSquare = null;
             return;
         }
 
         // The mouse was over something with a collider.
-        GridObject gridObjectOver = raycast.collider.GetComponent<GridObject>();
-        if (gridObjectOver == null) {
-            heldGridHoldable.holdReleased();
-            heldGridHoldable = null;
+        Square squareOver = raycast.collider.GetComponent<Square>();
+        if (squareOver == null) {
+            heldSquare.holdReleased();
+            heldSquare = null;
             return;
         }
 
         // The mouse was over a GridObject.
-        heldGridHoldable.holdReleased(gridObjectOver);
-        heldGridHoldable = null;
+        heldSquare.holdReleased(squareOver);
+        heldSquare = null;
     }
+    */
 }
