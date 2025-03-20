@@ -4,7 +4,7 @@ public class FreezeState : GameplayState {
     private int framesFrozen;
     private int framesLeft;
 
-    public FreezeState(GameManager gameManager, int framesFrozen) : base(gameManager) {
+    public FreezeState(int framesFrozen) {
         this.framesFrozen = framesFrozen;
     }
 

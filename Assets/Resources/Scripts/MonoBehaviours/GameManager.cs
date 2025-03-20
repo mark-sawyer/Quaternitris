@@ -6,17 +6,16 @@ public class GameManager : MonoBehaviour {
     private FreezeState freezeState;
     private DestroyBlocksState destroyBlocksState;
     private CollapseBlocksState collapseBlocksState;
+    private ReplaceBlocksState replaceBlocksState;
 
 
 
     private void Start() {
-        int rows = 8;
-        int cols = 4;
-        Camera.main.transform.position = new Vector3((cols - 1f) / 2f, (rows - 1f) / 2f, -10f);
-        DestroyedSquareList destroyedSquareList = new DestroyedSquareList(rows, cols);
-        setupStates(destroyedSquareList, rows);
-        SquareGrid squareGridCreator = new SquareGrid(rows, cols, destroyedSquareList, collapseBlocksState);
-        SquareMasker squareMasker = new SquareMasker(rows, cols);
+        Camera.main.transform.position = getCameraPosition();
+        FallManager fallManager = new FallManager();
+        setupStates(fallManager);
+        SquareGridMaker.exe(fallManager);
+        SquareMasker squareMasker = new SquareMasker();
     }
     private void Update() {
         gameplayState.updateState();
@@ -25,17 +24,25 @@ public class GameManager : MonoBehaviour {
             gameplayState.enterState();
         }
     }
-    private void setupStates(DestroyedSquareList destroyedSquareList, int rows) {
-        regularInputState = new RegularInputState(this);
-        freezeState = new FreezeState(this, 2);
-        destroyBlocksState = new DestroyBlocksState(this);
-        collapseBlocksState = new CollapseBlocksState(this, destroyedSquareList, rows);
+    private void setupStates(FallManager fallManager) {
+        regularInputState = new RegularInputState();
+        freezeState = new FreezeState(2);
+        destroyBlocksState = new DestroyBlocksState(fallManager);
+        collapseBlocksState = new CollapseBlocksState(fallManager);
+        replaceBlocksState = new ReplaceBlocksState(fallManager);
 
-        regularInputState.setNextState(freezeState);
-        freezeState.setNextState(destroyBlocksState);
-        destroyBlocksState.setNextState(collapseBlocksState);
-        collapseBlocksState.setNextState(regularInputState);
+        regularInputState.nextState = freezeState;
+        freezeState.nextState = destroyBlocksState;
+        destroyBlocksState.nextState = collapseBlocksState;
+        collapseBlocksState.nextState = replaceBlocksState;
+        replaceBlocksState.nextState = regularInputState;
 
         gameplayState = regularInputState;
+    }
+    private Vector3 getCameraPosition() {
+        return new Vector3(
+                (Constants.COLS - 1f) / 2f,
+                (Constants.ROWS - 1f) / 2f, -10f
+            );
     }
 }

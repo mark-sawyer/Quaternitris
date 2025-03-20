@@ -1,10 +1,13 @@
 using UnityEngine;
 
 public class DestroyBlocksState : GameplayState {
-    public DestroyBlocksState(GameManager gameManager) : base(gameManager) { }
+    private FallManager fallManager;
 
-    public override void enterState() { }
-    public override void updateState() {
+    public DestroyBlocksState(FallManager fallManager) {
+        this.fallManager = fallManager;
+    }
+    public override void enterState() {
+        fallManager.clearDestroyedPositionsList();
         Events.destroyHighlightedSquares.Invoke();
     }
     public override bool exitConditionMet() {
