@@ -2,17 +2,16 @@
 using UnityEngine;
 
 public class RegularInputState : GameplayState {
-    private MouseSelectInput mouseInput;
+    private GameplayMouseInput mouseInput;
 
     public RegularInputState() {
-        mouseInput = new MouseSelectInput();
+        mouseInput = new GameplayMouseInput();
     }
 
     public override void updateState() {
-        Debug.Log("regular degular");
         mouseInput.handleMouseInput();
     }
     public override bool exitConditionMet() {
-        return Input.GetKeyDown(KeyCode.Space);
+        return mouseInput.squaresReleased;
     }
 }
